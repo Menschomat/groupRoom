@@ -1,4 +1,4 @@
-#groupRoom
+# groupRoom
 
 A basic chat-software based on java, sockets and all this dusty stuff.
 
