@@ -1,15 +1,17 @@
 package de.menschomat.education.Controller;
 
-import java.io.DataOutputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import model.ChatMessage;
+import utils.JsonUtil;
+import utils.TimeUtils;
+
+import java.io.*;
 import java.util.Scanner;
 
 public class MessageWriter implements Runnable {
-    private DataOutputStream out;
+    private OutputStream out;
     private Scanner scanner;
 
-    public MessageWriter(Scanner scanner, DataOutputStream out) {
+    public MessageWriter(Scanner scanner, OutputStream out) {
         this.out = out;
         this.scanner = scanner;
     }
@@ -17,7 +19,17 @@ public class MessageWriter implements Runnable {
     @Override
     public void run() {
         while (true) {
-            new PrintWriter(out, true).println(scanner.nextLine());
+            try {
+                new ObjectOutputStream(out).writeObject(new ChatMessage(
+                        "",
+                        "all",
+                        TimeUtils.getShortTimestamp(),
+                        scanner.nextLine()
+                ));
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

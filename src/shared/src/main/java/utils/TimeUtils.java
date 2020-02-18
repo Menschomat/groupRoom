@@ -1,4 +1,4 @@
-package de.menschomat.education.utils;
+package utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

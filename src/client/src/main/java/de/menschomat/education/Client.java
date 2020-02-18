@@ -4,9 +4,7 @@ import de.menschomat.education.Controller.MessageReader;
 import de.menschomat.education.Controller.MessageWriter;
 import de.menschomat.education.utils.ConfigReader;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -22,10 +20,9 @@ public class Client {
         Scanner scn = new Scanner(System.in);
         try {
             Socket s = new Socket(ip, port);
-            DataInputStream dis = new DataInputStream(s.getInputStream());
-            DataOutputStream dos = new DataOutputStream(s.getOutputStream());
-            Thread sendMessage = new Thread(new MessageWriter(scn, dos));
-            Thread readMessage = new Thread(new MessageReader(dis));
+            System.out.println("Welcome to groupRoom!");
+            Thread sendMessage = new Thread(new MessageWriter(scn, s.getOutputStream()));
+            Thread readMessage = new Thread(new MessageReader(s.getInputStream()));
             sendMessage.start();
             readMessage.start();
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {

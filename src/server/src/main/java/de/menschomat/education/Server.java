@@ -1,7 +1,7 @@
 package de.menschomat.education;
 
 import de.menschomat.education.Controller.MessageManager;
-import de.menschomat.education.utils.ConfigReader;
+import utils.ConfigReader;
 
 import java.io.IOException;
 

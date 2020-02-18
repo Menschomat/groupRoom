@@ -1,17 +1,13 @@
 package de.menschomat.education.Controller;
 
+import model.ChatMessage;
 
-import de.menschomat.education.utils.TimeUtils;
-
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public class MessageReader implements Runnable {
-    private DataInputStream in;
+    private InputStream in;
 
-    public MessageReader(DataInputStream in) {
+    public MessageReader(InputStream in) {
         this.in = in;
     }
 
@@ -19,13 +15,11 @@ public class MessageReader implements Runnable {
     public void run() {
         while (true) {
             try {
-                String msg = new BufferedReader(
-                        new InputStreamReader(in)
-                ).readLine();
-                System.out.println(String.format("[%s] %s", TimeUtils.getTimestamp(), msg));
-            } catch (IOException e) {
-
-                e.printStackTrace();
+                ChatMessage msg = (ChatMessage) new ObjectInputStream(in).readObject();
+                System.out.println(String.format("[%s][%s] %s", msg.getTimestamp(), msg.getSender(), msg.getMessageBody()));
+            } catch (Exception e) {
+                System.out.println("\033[0;31m" + "[ERROR] Client closed with error");
+                System.exit(1);
             }
         }
     }
